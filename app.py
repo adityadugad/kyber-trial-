@@ -1,11 +1,10 @@
 import os
-
-# Ensure liboqs is found
-os.environ["LD_LIBRARY_PATH"] = "/usr/local/lib"
-os.environ["OQS_INSTALL_PATH"] = "/usr/local"
-
 from flask import Flask, jsonify
 import oqs
+
+# Make sure liboqs C library can be found
+os.environ["LD_LIBRARY_PATH"] = "/usr/local/lib"
+os.environ["OQS_INSTALL_PATH"] = "/usr/local"
 
 app = Flask(__name__)
 
