@@ -1,0 +1,29 @@
+import os
+os.environ["LD_LIBRARY_PATH"] = "/usr/local/lib"
+
+from flask import Flask, jsonify
+import oqs
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "OQS KEM test running!"
+
+@app.route("/kem")
+def kem_test():
+    kem = oqs.KeyEncapsulation("Kyber512")
+
+    public_key = kem.generate_keypair()
+    ciphertext, secret_enc = kem.encap_secret(public_key)
+    secret_dec = kem.decap_secret(ciphertext)
+
+    return jsonify({
+        "algorithm": "Kyber512",
+        "match": secret_enc == secret_dec,
+        "public_key_length": len(public_key),
+        "ciphertext_length": len(ciphertext)
+    })
+
+if __name__ == "__main__":
+    app.run()
