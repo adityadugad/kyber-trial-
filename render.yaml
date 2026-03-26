@@ -3,6 +3,7 @@ services:
     name: kyber-trial
     env: python
     pythonVersion: 3.10
-    buildCommand: ./build.sh
+    # Run build.sh using bash so it works even if not executable
+    buildCommand: bash build.sh
     startCommand: gunicorn app:app --bind 0.0.0.0:10000
     autoDeploy: true
