@@ -1,5 +1,8 @@
 import os
+
+# Force correct library path
 os.environ["LD_LIBRARY_PATH"] = "/usr/local/lib"
+os.environ["OQS_INSTALL_PATH"] = "/usr/local"
 
 from flask import Flask, jsonify
 import oqs
@@ -12,10 +15,16 @@ def home():
 
 @app.route("/kem")
 def kem_test():
+    # Using Kyber512 for demonstration
     kem = oqs.KeyEncapsulation("Kyber512")
 
+    # Generate keypair
     public_key = kem.generate_keypair()
+
+    # Encapsulate secret
     ciphertext, secret_enc = kem.encap_secret(public_key)
+
+    # Decapsulate secret
     secret_dec = kem.decap_secret(ciphertext)
 
     return jsonify({
@@ -26,4 +35,4 @@ def kem_test():
     })
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=10000)
