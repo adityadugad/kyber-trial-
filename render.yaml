@@ -3,17 +3,6 @@ services:
     name: kyber-trial
     env: python
     pythonVersion: 3.10
-    buildCommand: |
-      apt-get update && apt-get install -y cmake build-essential libssl-dev git && \
-      git clone https://github.com/open-quantum-safe/liboqs && \
-      cd liboqs && \
-      mkdir build && cd build && \
-      cmake -DOQS_BUILD_ONLY_LIB=ON .. && \
-      make -j && \
-      make install && \
-      ldconfig && \
-      cd ../../ && \
-      pip install --upgrade pip && \
-      pip install -r requirements.txt
+    buildCommand: ./build.sh
     startCommand: gunicorn app:app --bind 0.0.0.0:10000
     autoDeploy: true
