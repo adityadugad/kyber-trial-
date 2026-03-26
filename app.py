@@ -1,6 +1,6 @@
 import os
 
-# Force correct library path
+# Ensure liboqs is found
 os.environ["LD_LIBRARY_PATH"] = "/usr/local/lib"
 os.environ["OQS_INSTALL_PATH"] = "/usr/local"
 
@@ -15,16 +15,9 @@ def home():
 
 @app.route("/kem")
 def kem_test():
-    # Using Kyber512 for demonstration
     kem = oqs.KeyEncapsulation("Kyber512")
-
-    # Generate keypair
     public_key = kem.generate_keypair()
-
-    # Encapsulate secret
     ciphertext, secret_enc = kem.encap_secret(public_key)
-
-    # Decapsulate secret
     secret_dec = kem.decap_secret(ciphertext)
 
     return jsonify({
